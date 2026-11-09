@@ -14,13 +14,13 @@
 .thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.thumbs img{width:62px;height:62px;object-fit:cover;border-radius:8px;cursor:pointer;opacity:.6;border:2px solid transparent}.thumbs img.on{opacity:1;border-color:#174c5a}
 .specs{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}.specs td{padding:7px 4px;border-bottom:1px solid #e5e7eb;vertical-align:top}.specs td:first-child{color:#667085;width:38%}
 #pvInfo h2{margin:4px 0 6px}#pvInfo p{color:#475467;white-space:pre-line}
-.pubbox{background:#eef4ff;border:1px solid #c7d7fe;border-radius:12px;padding:14px 16px;margin:16px 0}
+.edit-btn{background:#fff4d6;color:#7a5200;margin-top:6px;width:100%}.curphotos{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin:10px 0}.curphotos div{position:relative;border:2px solid #e5e7eb;border-radius:10px;overflow:hidden;background:#fff}.curphotos div.main{border-color:#174c5a}.curphotos img{width:100%;height:90px;object-fit:cover;display:block}.curphotos .ph-act{display:flex;gap:4px;padding:4px}.curphotos .ph-act button{flex:1;padding:5px;font-size:11px;border-radius:7px}.curphotos .tag{position:absolute;top:5px;left:5px;background:#174c5a;color:#fff;font-size:10px;padding:2px 6px;border-radius:50px}.editing-banner{background:#fff4d6;border:1px solid #f0d48a;border-radius:10px;padding:10px 14px;margin:0 0 12px}.pubbox{background:#eef4ff;border:1px solid #c7d7fe;border-radius:12px;padding:14px 16px;margin:16px 0}
 @media(max-width:700px){#preview .pv{grid-template-columns:1fr}}</style></head><body><header><h1>Catálogo Unificado</h1><p>VitraHouse · Ventanas, puertas y vidrio &nbsp; | &nbsp; Muebles Zacapa · Muebles y carpintería</p></header><main><nav><button class="active" data-tab="muebles" id="tabMuebles">Muebles Zacapa (45)</button><button data-tab="vitra">VitraHouse (20)</button><button data-tab="agregados" id="tabNuevos" class="hidden">✨ Nuevos productos (0)</button><button data-tab="config">⚙ Configuración</button><button class="primary" id="shareCatalog" type="button">↗ Compartir catálogo</button></nav><div class="uploadbar"><div><strong>🛋️ ¿Tienes un producto nuevo?</strong><p>Créalo con sus fotos, precio, medidas, material y descripción para Muebles Zacapa o VitraHouse.</p></div><button class="primary" id="quickUpload" type="button">＋ Crear producto</button></div>
 <div class="quote-banner" id="quoteBanner"><div><strong>¿Te interesa algún producto?</strong><p>Selecciona las fotografías y envíanos tu solicitud de cotización por WhatsApp.</p></div><button type="button" id="quoteShortcut" class="primary">📋 Solicitar cotización</button></div>
 <section id="muebles" class="view"><div class="toolbar"><input id="search" placeholder="Buscar muebles por categoría o nombre"><select id="category"><option value="">Todas las categorías</option></select></div><div class="counter" id="count"></div><div class="grid" id="mueblesGrid"></div></section>
 <section id="vitra" class="view hidden"><div class="panel"><h2>VitraHouse — catálogo de proyectos</h2><p>Se muestra el catálogo original publicado, con sus 20 proyectos y sus filtros.</p><p><a class="btn primary" target="_blank" rel="noopener" href="https://ventasallsupplierhn-png.github.io/VitraHouse-Catalogo-final/">Abrir catálogo original</a></p><p class="notice">La vista integrada requiere internet y que GitHub Pages permita cargarla. Si no aparece, usa «Abrir catálogo original».</p><iframe class="iframe" loading="lazy" title="Catálogo VitraHouse" src="https://ventasallsupplierhn-png.github.io/VitraHouse-Catalogo-final/"></iframe></div></section>
 <section id="agregados" class="view hidden"><div class="toolbar"><input id="extraSearch" placeholder="Buscar nuevas imágenes"><select id="extraBrand"><option value="">Ambas marcas</option><option>VitraHouse</option><option>Muebles Zacapa</option></select></div><div class="counter" id="extraCount"></div><div class="grid" id="extrasGrid"></div></section>
-<section id="config" class="view hidden"><div class="panel"><h2>＋ Crear producto</h2><p>Completa la información del producto y agrega sus fotografías. La primera foto será la principal.</p>
+<section id="config" class="view hidden"><div class="panel"><h2 id="formTitle">＋ Crear producto</h2><p id="formHint">Completa la información del producto y agrega sus fotografías. La primera foto será la principal.</p><div id="editingBanner" class="editing-banner hidden"></div>
 <div class="formgrid prodform">
 <label>Empresa <select id="brand"><option>Muebles Zacapa</option><option>VitraHouse</option></select></label>
 <label>Nombre del producto <span class="req">*</span><input id="title" placeholder="Ej. Comedor 6 sillas en caoba"></label>
@@ -31,9 +31,9 @@
 <label>Color<input id="color" placeholder="Ej. Nogal oscuro"></label>
 <label>Disponibilidad<select id="avail"><option>Disponible</option><option>Sobre pedido</option><option>Agotado</option></select></label>
 <label class="wide">Descripción<textarea id="desc" placeholder="Detalles, usos, tiempo de entrega, garantía, instalación…"></textarea></label>
-<label class="wide">Fotografías del producto <span class="req">*</span> (puedes elegir varias)<input id="photos" type="file" accept="image/*" multiple></label>
+<div class="wide hidden" id="curPhotosWrap"><strong style="font-size:13px">Fotos actuales</strong><div id="curPhotos" class="curphotos"></div></div><label class="wide"><span id="photosLabel">Fotografías del producto <span class="req">*</span> (puedes elegir varias)</span><input id="photos" type="file" accept="image/*" multiple></label>
 </div><div id="fileCount" class="counter">No hay imágenes seleccionadas.</div><div id="filePreview" class="filepreview"></div>
-<p class="actions"><button class="primary" id="save">💾 Guardar producto</button><button id="resetForm" type="button">Limpiar formulario</button></p><p id="status" aria-live="polite"></p>
+<p class="actions"><button class="primary" id="save">💾 Guardar producto</button><button id="resetForm" type="button">Limpiar formulario</button><button id="cancelEdit" type="button" class="hidden">✕ Cancelar edición</button></p><p id="status" aria-live="polite"></p>
 <div class="pubbox"><strong>🌐 Publicar para los clientes</strong><p style="margin:6px 0 10px">Los productos que creas se guardan primero en este navegador. Para que aparezcan en el enlace de los clientes, descarga el catálogo actualizado y súbelo a GitHub reemplazando <code>index.html</code>.</p><p class="actions"><button class="primary" id="publish" type="button">⬇ Descargar catálogo actualizado</button><label class="btn hidden" id="pickSourceWrap">Seleccionar index.html actual <input id="pickSource" type="file" accept=".html,text/html" hidden></label></p><p id="pubStatus" aria-live="polite"></p></div>
 <p class="actions"><button id="export">Exportar respaldo JSON</button><label class="btn">Importar JSON <input id="import" type="file" accept="application/json,.json" hidden></label><button id="clear">Eliminar productos creados en este navegador</button></p>
 </div></section>
@@ -44,12 +44,12 @@ const PUBLISHED=/*PUB*/[]/*PUB*/;
 const PUBLIC_URL='https://ventasallsupplierhn-png.github.io/Catalogo-unificado./';
 const ORDER_PHONES={'Muebles Zacapa':'50488259297','VitraHouse':'50488259297'};
 const clientMode=new URLSearchParams(location.search).get('vista')==='cliente';
-let localItems=[];let extras=[];let db;let orderItems=[];let sourceHTML=null;
+let localItems=[];let extras=[];let baseView=BASE.slice();let edits={};let editingId=null;let editImages=[];let db;let orderItems=[];let sourceHTML=null;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const imgsOf=x=>Array.isArray(x.images)&&x.images.length?x.images:(x.image?[x.image]:[]);
 const money=n=>'L '+Number(n).toLocaleString('es-HN',{minimumFractionDigits:2,maximumFractionDigits:2});
-const allItems=()=>[...extras,...BASE];
+const allItems=()=>[...extras,...baseView];
 
 // Vista de clientes: se eliminan las herramientas de administración
 if(clientMode){
@@ -59,10 +59,12 @@ if(clientMode){
 
 // ===== Mezcla de productos publicados + creados en este navegador =====
 function mergeExtras(){
- const map=new Map();
- PUBLISHED.forEach(x=>map.set(x.id,x));
- localItems.forEach(x=>{if(x.deleted)map.delete(x.id);else map.set(x.id,x)});
+ const map=new Map();edits={};
+ PUBLISHED.forEach(x=>{if(x.edit)edits[x.id]=x;else map.set(x.id,x)});
+ localItems.forEach(x=>{if(x.edit)edits[x.id]=x;else if(x.deleted)map.delete(x.id);else map.set(x.id,x)});
  extras=[...map.values()].sort((a,b)=>(b.created||0)-(a.created||0));
+ // Ediciones de los productos originales: se aplican encima de BASE
+ baseView=BASE.map(b=>{const e=edits[b.id];if(!e)return b;const {edit,...f}=e;const x={...b,...f};if(!Array.isArray(e.images)||!e.images.length){x.images=[b.image];x.image=b.image}return x});
 }
 
 // ===== Tarjetas =====
@@ -70,17 +72,17 @@ function availClass(a){return a==='Agotado'?'agotado':a==='Sobre pedido'?'pedido
 function show(items,where){
  $(where).innerHTML=items.map(x=>{
   const im=imgsOf(x),isNew=!!x.custom;
-  return `<article class="card">${isNew?'<span class="badge-new">Nuevo</span>':''}${im.length>1?`<span class="photos-n">📷 ${im.length}</span>`:''}<img loading="lazy" src="${im[0]||''}" alt="${esc(x.title)}" data-id="${esc(x.id)}"><div class="details"><span class="pill">${esc(x.brand)}</span>${x.avail?`<span class="avail ${availClass(x.avail)}">${esc(x.avail)}</span>`:''}<h3>${esc(x.title)}</h3><small>${esc(x.category)}</small>${x.price?`<div class="price">${money(x.price)}</div>`:''}${x.desc?`<p class="desc">${esc(x.desc)}</p>`:''}<button class="add-order" data-add="${esc(x.id)}">＋ Solicitar cotización</button>${isNew&&!clientMode?`<p><button data-delete="${esc(x.id)}">Eliminar</button></p>`:''}</div></article>`;
+  return `<article class="card">${isNew?'<span class="badge-new">Nuevo</span>':''}${im.length>1?`<span class="photos-n">📷 ${im.length}</span>`:''}<img loading="lazy" src="${im[0]||''}" alt="${esc(x.title)}" data-id="${esc(x.id)}"><div class="details"><span class="pill">${esc(x.brand)}</span>${x.avail?`<span class="avail ${availClass(x.avail)}">${esc(x.avail)}</span>`:''}<h3>${esc(x.title)}</h3><small>${esc(x.category)}</small>${x.price?`<div class="price">${money(x.price)}</div>`:''}${x.desc?`<p class="desc">${esc(x.desc)}</p>`:''}<button class="add-order" data-add="${esc(x.id)}">＋ Solicitar cotización</button>${!clientMode?`<button class="edit-btn admin-only" data-edit="${esc(x.id)}">✏ Editar</button>`:''}${isNew&&!clientMode?`<p><button data-delete="${esc(x.id)}">Eliminar</button></p>`:''}</div></article>`;
  }).join('')||'<p class="empty">No hay productos para mostrar.</p>';
 }
 function fillCategories(){
- const cats=[...new Set([...BASE,...extras.filter(x=>x.brand==='Muebles Zacapa')].map(x=>x.category))].sort();
+ const cats=[...new Set([...baseView,...extras].filter(x=>x.brand==='Muebles Zacapa').map(x=>x.category))].sort();
  const sel=$('category'),cur=sel.value;sel.innerHTML='<option value="">Todas las categorías</option>';
  cats.forEach(x=>{let o=document.createElement('option');o.value=o.textContent=x;sel.append(o)});sel.value=cats.includes(cur)?cur:'';
  if($('catList'))$('catList').innerHTML=[...new Set(allItems().map(x=>x.category))].sort().map(c=>`<option value="${esc(c)}">`).join('');
 }
 function render(){
- const muebles=[...extras.filter(x=>x.brand==='Muebles Zacapa'),...BASE];
+ const muebles=[...extras,...baseView].filter(x=>x.brand==='Muebles Zacapa');
  const q=$('search').value.toLowerCase(),cat=$('category').value;
  const txt=x=>`${x.title} ${x.category} ${x.desc||''} ${x.material||''} ${x.color||''}`.toLowerCase();
  let a=muebles.filter(x=>(!cat||x.category===cat)&&txt(x).includes(q));show(a,'mueblesGrid');
@@ -107,6 +109,7 @@ function openDetail(id){
 $('thumbs').addEventListener('click',e=>{const t=e.target.closest('img[data-k]');if(!t)return;$('large').src=t.src;$('thumbs').querySelectorAll('img').forEach(i=>i.classList.toggle('on',i===t))});
 document.addEventListener('click',e=>{
  const im=e.target.closest('.card img[data-id]');if(im)openDetail(im.dataset.id);
+ const ed=e.target.closest('[data-edit]');if(ed&&!clientMode)startEdit(ed.dataset.edit);
  const del=e.target.closest('[data-delete]');if(del&&!clientMode&&confirm('¿Eliminar este producto?'))remove(del.dataset.delete);
  const add=e.target.closest('[data-add]');if(add){orderAdd(add.dataset.add);add.textContent='✓ Agregado';setTimeout(()=>{if(add.isConnected)add.textContent='＋ Solicitar cotización'},1300)}
 });
@@ -114,27 +117,56 @@ $('close').onclick=()=>$('preview').close();
 
 // ===== Crear producto (solo administración) =====
 if(!clientMode){
- $('quickUpload').onclick=()=>{document.querySelector('[data-tab="config"]').click();$('title').focus()};
+ $('quickUpload').onclick=()=>{resetForm();document.querySelector('[data-tab="config"]').click();$('title').focus()};
  $('photos').addEventListener('change',()=>{const files=[...$('photos').files];$('fileCount').textContent=files.length?`${files.length} foto(s) seleccionada(s). La primera será la principal.`:'No hay imágenes seleccionadas.';$('filePreview').replaceChildren();files.slice(0,12).forEach(f=>{const cell=document.createElement('div'),img=document.createElement('img'),name=document.createElement('small');const u=URL.createObjectURL(f);img.src=u;img.onload=()=>URL.revokeObjectURL(u);name.textContent=f.name;cell.append(img,name);$('filePreview').append(cell)});if(files.length>12){let t=document.createElement('small');t.textContent=`Y ${files.length-12} más`;$('filePreview').append(t)}});
- $('resetForm').onclick=resetForm;
+ $('resetForm').onclick=()=>{if(editingId)startEdit(editingId);else resetForm()};
+ $('cancelEdit').onclick=()=>{resetForm();$('status').textContent='Edición cancelada.'};
+ $('curPhotos').addEventListener('click',e=>{const b=e.target.closest('[data-ph]');if(!b)return;const k=+b.dataset.k;if(b.dataset.ph==='del')editImages.splice(k,1);else editImages.unshift(editImages.splice(k,1)[0]);drawCurPhotos()});
  $('save').onclick=saveProduct;
  $('export').onclick=()=>{let blob=new Blob([JSON.stringify({version:2,items:localItems})],{type:'application/json'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='catalogo_unificado_productos.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),3000)};
- $('import').onchange=async e=>{try{let data=JSON.parse(await e.target.files[0].text());if(!Array.isArray(data.items))throw Error('Formato JSON no válido');let valid=data.items.filter(x=>x.id&&(x.deleted||(x.title&&['VitraHouse','Muebles Zacapa'].includes(x.brand)&&imgsOf(x).every(u=>typeof u==='string'&&u.startsWith('data:image/'))&&imgsOf(x).length)));await transact('readwrite',st=>valid.forEach(x=>st.put(x.deleted?x:{...x,custom:true})));$('status').textContent=`Importados ${valid.length} producto(s).`;await refresh()}catch(err){$('status').textContent='Error al importar: '+err.message}};
+ $('import').onchange=async e=>{try{let data=JSON.parse(await e.target.files[0].text());if(!Array.isArray(data.items))throw Error('Formato JSON no válido');let valid=data.items.filter(x=>x.id&&(x.deleted||(x.edit&&x.title)||(x.title&&['VitraHouse','Muebles Zacapa'].includes(x.brand)&&imgsOf(x).every(u=>typeof u==='string'&&u.startsWith('data:image/'))&&imgsOf(x).length)));await transact('readwrite',st=>valid.forEach(x=>st.put(x.deleted||x.edit?x:{...x,custom:true})));$('status').textContent=`Importados ${valid.length} producto(s).`;await refresh()}catch(err){$('status').textContent='Error al importar: '+err.message}};
  $('clear').onclick=async()=>{if(!confirm('¿Eliminar todos los productos creados en este navegador?'))return;await transact('readwrite',st=>st.clear());await refresh();$('status').textContent='Productos eliminados de este navegador.'};
  $('publish').onclick=publishCatalog;
  $('pickSource').onchange=async e=>{const f=e.target.files[0];if(!f)return;sourceHTML=await f.text();publishCatalog()};
 }
-function resetForm(){['title','cat','price','size','material','color','desc'].forEach(k=>$(k).value='');$('avail').value='Disponible';$('photos').value='';$('filePreview').replaceChildren();$('fileCount').textContent='No hay imágenes seleccionadas.'}
+function resetForm(){['title','cat','price','size','material','color','desc'].forEach(k=>$(k).value='');$('avail').value='Disponible';$('photos').value='';$('filePreview').replaceChildren();$('fileCount').textContent='No hay imágenes seleccionadas.';editingId=null;editImages=[];setFormMode()}
+function setFormMode(){
+ const on=!!editingId;$('formTitle').textContent=on?'✏ Editar producto':'＋ Crear producto';
+ $('formHint').textContent=on?'Cambia lo que necesites y presiona Guardar cambios. Puedes quitar fotos, elegir la principal o agregar nuevas.':'Completa la información del producto y agrega sus fotografías. La primera foto será la principal.';
+ $('save').textContent=on?'💾 Guardar cambios':'💾 Guardar producto';$('cancelEdit').classList.toggle('hidden',!on);$('resetForm').textContent=on?'Deshacer cambios':'Limpiar formulario';
+ $('curPhotosWrap').classList.toggle('hidden',!on);$('photosLabel').textContent=on?'Agregar más fotografías (opcional)':'Fotografías del producto * (puedes elegir varias)';
+ $('editingBanner').classList.toggle('hidden',!on);if(on){const x=allItems().find(i=>i.id===editingId);$('editingBanner').textContent='Editando: '+(x?x.title:'')}
+ if(on)drawCurPhotos();
+}
+function drawCurPhotos(){$('curPhotos').innerHTML=editImages.map((u,k)=>`<div class="${k?'':'main'}">${k?'':'<span class="tag">Principal</span>'}<img src="${u}" alt="Foto ${k+1}"><div class="ph-act">${k?`<button type="button" data-ph="main" data-k="${k}">★ Principal</button>`:''}<button type="button" data-ph="del" data-k="${k}">✕ Quitar</button></div></div>`).join('')||'<small>Sin fotos: agrega al menos una.</small>'}
+function startEdit(id){
+ const x=allItems().find(i=>i.id===id);if(!x)return;resetForm();editingId=id;editImages=imgsOf(x).slice();
+ $('brand').value=x.brand;$('title').value=x.title||'';$('cat').value=x.category||'';$('price').value=x.price??'';$('size').value=x.size||'';$('material').value=x.material||'';$('color').value=x.color||'';$('avail').value=x.avail||'Disponible';$('desc').value=x.desc||'';
+ setFormMode();$('status').textContent='';document.querySelector('[data-tab="config"]').click();editingId=id;setFormMode();$('config').scrollIntoView({behavior:'smooth'});$('title').focus();
+}
 // Reduce cada foto a máx. 1400 px para que el catálogo cargue rápido
 const fileData=f=>new Promise((res,rej)=>{const u=URL.createObjectURL(f),img=new Image();img.onload=()=>{const k=Math.min(1,1400/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',0.82))};img.onerror=()=>{URL.revokeObjectURL(u);rej(Error('No se pudo leer '+f.name))};img.src=u});
 async function saveProduct(){
  const fs=[...$('photos').files],title=$('title').value.trim();
  if(!title){$('status').textContent='Escribe el nombre del producto.';$('title').focus();return}
+ if(editingId)return saveEdit(fs,title);
  if(!fs.length){$('status').textContent='Agrega al menos una fotografía del producto.';return}
  try{
   $('status').textContent='Guardando…';const images=[];for(const f of fs)images.push(await fileData(f));
   const p={id:'p'+(crypto.randomUUID?crypto.randomUUID():Date.now()),brand:$('brand').value,title,category:$('cat').value.trim()||'General',price:$('price').value?Number($('price').value):null,size:$('size').value.trim(),material:$('material').value.trim(),color:$('color').value.trim(),avail:$('avail').value,desc:$('desc').value.trim(),images,image:images[0],custom:true,created:Date.now()};
   await transact('readwrite',st=>st.put(p));resetForm();$('status').textContent=`✓ Producto «${title}» guardado con ${images.length} foto(s). Recuerda descargar el catálogo actualizado para publicarlo.`;await refresh();
+ }catch(e){$('status').textContent='Error al guardar: '+e.message}
+}
+
+async function saveEdit(fs,title){
+ try{
+  $('status').textContent='Guardando cambios…';const added=[];for(const f of fs)added.push(await fileData(f));
+  const images=[...editImages,...added];if(!images.length){$('status').textContent='El producto necesita al menos una foto.';return}
+  const fields={brand:$('brand').value,title,category:$('cat').value.trim()||'General',price:$('price').value?Number($('price').value):null,size:$('size').value.trim(),material:$('material').value.trim(),color:$('color').value.trim(),avail:$('avail').value,desc:$('desc').value.trim()};
+  const base=BASE.find(b=>b.id===editingId);let rec;
+  if(base){const same=images.length===1&&images[0]===base.image;rec={id:base.id,edit:true,...fields,updated:Date.now()};if(!same){rec.images=images;rec.image=images[0]}}
+  else{const old=extras.find(i=>i.id===editingId)||{};rec={...old,...fields,images,image:images[0],custom:true,updated:Date.now()};delete rec.deleted}
+  await transact('readwrite',st=>st.put(rec));resetForm();$('status').textContent=`✓ Cambios guardados en «${title}». Recuerda descargar el catálogo actualizado para publicarlos.`;await refresh();
  }catch(e){$('status').textContent='Error al guardar: '+e.message}
 }
 
@@ -156,10 +188,12 @@ async function publishCatalog(){
  }catch(e){$('pickSourceWrap').classList.remove('hidden');st.textContent='Abriste el archivo desde tu equipo: selecciona el index.html actual con el botón de al lado para generar la versión actualizada.';return}
  const parts=sourceHTML.split(MK);
  if(parts.length!==3){sourceHTML=null;st.textContent='El archivo seleccionado no es este catálogo. Selecciona el index.html correcto.';return}
- const data=JSON.stringify(extras.map(({id,brand,title,category,price,size,material,color,avail,desc,created})=>{const x=extras.find(i=>i.id===id);const images=imgsOf(x);return{id,brand,title,category,price,size,material,color,avail,desc,images,image:images[0],custom:true,created}})).replace(/</g,'\\u003c').replace(/\*/g,'\\u002a');
+ const prods=extras.map(x=>{const images=imgsOf(x);const {id,brand,title,category,price,size,material,color,avail,desc,created}=x;return{id,brand,title,category,price,size,material,color,avail,desc,images,image:images[0],custom:true,created}});
+ const eds=Object.values(edits).map(e=>{const {id,brand,title,category,price,size,material,color,avail,desc,images}=e;const r={id,edit:true,brand,title,category,price,size,material,color,avail,desc};if(Array.isArray(images)&&images.length){r.images=images;r.image=images[0]}return r});
+ const data=JSON.stringify([...prods,...eds]).replace(/</g,'\\u003c').replace(/\*/g,'\\u002a');
  const html=[parts[0],data,parts[2]].join(MK);
  const u=URL.createObjectURL(new Blob([html],{type:'text/html'})),a=document.createElement('a');a.href=u;a.download='index.html';a.click();setTimeout(()=>URL.revokeObjectURL(u),4000);
- st.textContent=`✓ Se descargó index.html con ${extras.length} producto(s) nuevo(s). Súbelo a GitHub (repositorio Catalogo-unificado.) reemplazando el archivo actual; en 1–2 minutos los clientes lo verán en el enlace.`;
+ st.textContent=`✓ Se descargó index.html con ${extras.length} producto(s) nuevo(s) y ${Object.keys(edits).length} producto(s) editado(s). Súbelo a GitHub (repositorio Catalogo-unificado.) reemplazando el archivo actual; en 1–2 minutos los clientes lo verán en el enlace.`;
 }
 
 // ===== Compartir: solo el enlace de clientes =====
