@@ -15,10 +15,10 @@
 .specs{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}.specs td{padding:7px 4px;border-bottom:1px solid #e5e7eb;vertical-align:top}.specs td:first-child{color:#667085;width:38%}
 #pvInfo h2{margin:4px 0 6px}#pvInfo p{color:#475467;white-space:pre-line}
 .edit-btn{background:#fff4d6;color:#7a5200;margin-top:6px;width:100%}.curphotos{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin:10px 0}.curphotos div{position:relative;border:2px solid #e5e7eb;border-radius:10px;overflow:hidden;background:#fff}.curphotos div.main{border-color:#174c5a}.curphotos img{width:100%;height:90px;object-fit:cover;display:block}.curphotos .ph-act{display:flex;gap:4px;padding:4px}.curphotos .ph-act button{flex:1;padding:5px;font-size:11px;border-radius:7px}.curphotos .tag{position:absolute;top:5px;left:5px;background:#174c5a;color:#fff;font-size:10px;padding:2px 6px;border-radius:50px}.editing-banner{background:#fff4d6;border:1px solid #f0d48a;border-radius:10px;padding:10px 14px;margin:0 0 12px}.pubbox.cloud-ok{background:#e9f7ef;border-color:#b7dfc6}.cloud-login{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}.cloud-login input{flex:1;min-width:180px}.pubbox{background:#eef4ff;border:1px solid #c7d7fe;border-radius:12px;padding:14px 16px;margin:16px 0}
-@media(max-width:700px){#preview .pv{grid-template-columns:1fr}}</style></head><body><header><h1>Catálogo Unificado</h1><p>VitraHouse · Ventanas, puertas y vidrio &nbsp; | &nbsp; Muebles Zacapa · Muebles y carpintería</p></header><main><nav><button class="active" data-tab="muebles" id="tabMuebles">Muebles Zacapa (45)</button><button data-tab="vitra">VitraHouse (20)</button><button data-tab="agregados" id="tabNuevos" class="hidden">✨ Nuevos productos (0)</button><button data-tab="config">⚙ Configuración</button><button class="primary" id="shareCatalog" type="button">↗ Compartir catálogo</button></nav><div class="uploadbar"><div><strong>🛋️ ¿Tienes un producto nuevo?</strong><p>Créalo con sus fotos, precio, medidas, material y descripción para Muebles Zacapa o VitraHouse.</p></div><button class="primary" id="quickUpload" type="button">＋ Crear producto</button></div>
+@media(max-width:700px){#preview .pv{grid-template-columns:1fr}}</style></head><body><header><h1>Catálogo Unificado</h1><p>VitraHouse · Ventanas, puertas y vidrio &nbsp; | &nbsp; Muebles Zacapa · Muebles y carpintería</p></header><main><nav><button class="active" data-tab="muebles" id="tabMuebles">Muebles Zacapa (45)</button><button data-tab="vitra" id="tabVitra">VitraHouse (20)</button><button data-tab="agregados" id="tabNuevos" class="hidden">✨ Nuevos productos (0)</button><button data-tab="config">⚙ Configuración</button><button class="primary" id="shareCatalog" type="button">↗ Compartir catálogo</button></nav><div class="uploadbar"><div><strong>🛋️ ¿Tienes un producto nuevo?</strong><p>Créalo con sus fotos, precio, medidas, material y descripción para Muebles Zacapa o VitraHouse.</p></div><button class="primary" id="quickUpload" type="button">＋ Crear producto</button></div>
 <div class="quote-banner" id="quoteBanner"><div><strong>¿Te interesa algún producto?</strong><p>Selecciona las fotografías y envíanos tu solicitud de cotización por WhatsApp.</p></div><button type="button" id="quoteShortcut" class="primary">📋 Solicitar cotización</button></div>
 <section id="muebles" class="view"><div class="toolbar"><input id="search" placeholder="Buscar muebles por categoría o nombre"><select id="category"><option value="">Todas las categorías</option></select></div><div class="counter" id="count"></div><div class="grid" id="mueblesGrid"></div></section>
-<section id="vitra" class="view hidden"><div class="panel"><h2>VitraHouse — catálogo de proyectos</h2><p>Se muestra el catálogo original publicado, con sus 20 proyectos y sus filtros.</p><p><a class="btn primary" target="_blank" rel="noopener" href="https://ventasallsupplierhn-png.github.io/VitraHouse-Catalogo-final/">Abrir catálogo original</a></p><p class="notice">La vista integrada requiere internet y que GitHub Pages permita cargarla. Si no aparece, usa «Abrir catálogo original».</p><iframe class="iframe" loading="lazy" title="Catálogo VitraHouse" src="https://ventasallsupplierhn-png.github.io/VitraHouse-Catalogo-final/"></iframe></div></section>
+<section id="vitra" class="view hidden"><div class="toolbar"><input id="vSearch" placeholder="Buscar trabajos de VitraHouse"><select id="vCategory"><option value="">Todas las categorías</option></select></div><div class="counter" id="vCount"></div><div class="grid" id="vitraGrid"></div></section>
 <section id="agregados" class="view hidden"><div class="toolbar"><input id="extraSearch" placeholder="Buscar nuevas imágenes"><select id="extraBrand"><option value="">Ambas marcas</option><option>VitraHouse</option><option>Muebles Zacapa</option></select></div><div class="counter" id="extraCount"></div><div class="grid" id="extrasGrid"></div></section>
 <section id="config" class="view hidden"><div class="panel"><h2 id="formTitle">＋ Crear producto</h2><p id="formHint">Completa la información del producto y agrega sus fotografías. La primera foto será la principal.</p><div id="cloudBox" class="pubbox hidden"></div><div id="editingBanner" class="editing-banner hidden"></div>
 <div class="formgrid prodform">
@@ -40,6 +40,7 @@
 <p id="shareStatus" class="notice hidden" aria-live="polite"></p><div class="footer">Catálogo conjunto · <a href="https://ventasallsupplierhn-png.github.io/MueblesZacapa/" target="_blank">Muebles Zacapa</a> · <a href="https://ventasallsupplierhn-png.github.io/VitraHouse-Catalogo-final/" target="_blank">VitraHouse</a></div></main><dialog id="preview"><button id="close" style="float:right">Cerrar ×</button><div class="pv"><div><img id="large" alt="Vista ampliada"><div class="thumbs" id="thumbs"></div></div><div id="pvInfo"></div></div></dialog>
 <script>const BASE=[];
 // ===== Inicialización: variables principales =====
+const VITRA_FB=[];
 const PUBLISHED=/*PUB*/[]/*PUB*/;
 const PUBLIC_URL='https://ventasallsupplierhn-png.github.io/Catalogo-unificado./';
 // ===== Nube (Supabase) — pegar aquí la URL del proyecto y la clave publicable (es pública por diseño) =====
@@ -71,8 +72,9 @@ function mergeExtras(){
  localItems.forEach(x=>{if(x.edit)edits[x.id]=x;else if(x.deleted)map.delete(x.id);else map.set(x.id,x)})}
  extras=[...map.values()].sort((a,b)=>(b.created||0)-(a.created||0));
  // Ediciones de los productos originales: se aplican encima de BASE
- if(orig.length){baseView=orig;return}
- baseView=BASE.map(b=>{const e=edits[b.id];if(!e)return b;const {edit,...f}=e;const x={...b,...f};if(!Array.isArray(e.images)||!e.images.length){x.images=[b.image];x.image=b.image}return x});
+ const vfb=orig.some(x=>x.brand==='VitraHouse')?[]:VITRA_FB;
+ if(orig.length){baseView=[...orig,...vfb];return}
+ baseView=BASE.map(b=>{const e=edits[b.id];if(!e)return b;const {edit,...f}=e;const x={...b,...f};if(!Array.isArray(e.images)||!e.images.length){x.images=[b.image];x.image=b.image}return x}).concat(vfb);
 }
 
 // ===== Tarjetas =====
@@ -87,6 +89,9 @@ function fillCategories(){
  const cats=[...new Set([...baseView,...extras].filter(x=>x.brand==='Muebles Zacapa').map(x=>x.category))].sort();
  const sel=$('category'),cur=sel.value;sel.innerHTML='<option value="">Todas las categorías</option>';
  cats.forEach(x=>{let o=document.createElement('option');o.value=o.textContent=x;sel.append(o)});sel.value=cats.includes(cur)?cur:'';
+ const vcats=[...new Set([...baseView,...extras].filter(x=>x.brand==='VitraHouse').map(x=>x.category))].sort();
+ const vs=$('vCategory'),vcur=vs.value;vs.innerHTML='<option value="">Todas las categorías</option>';
+ vcats.forEach(x=>{let o=document.createElement('option');o.value=o.textContent=x;vs.append(o)});vs.value=vcats.includes(vcur)?vcur:'';
  if($('catList'))$('catList').innerHTML=[...new Set(allItems().map(x=>x.category))].sort().map(c=>`<option value="${esc(c)}">`).join('');
 }
 function render(){
@@ -95,6 +100,9 @@ function render(){
  const txt=x=>`${x.title} ${x.category} ${x.desc||''} ${x.material||''} ${x.color||''}`.toLowerCase();
  let a=muebles.filter(x=>(!cat||x.category===cat)&&txt(x).includes(q));show(a,'mueblesGrid');
  $('count').textContent=`Mostrando ${a.length} de ${muebles.length} productos`;
+ const vitra=[...extras,...baseView].filter(x=>x.brand==='VitraHouse');const vq=$('vSearch').value.toLowerCase(),vc=$('vCategory').value;
+ let v=vitra.filter(x=>(!vc||x.category===vc)&&txt(x).includes(vq));show(v,'vitraGrid');
+ $('vCount').textContent=`Mostrando ${v.length} de ${vitra.length} trabajos`;$('tabVitra').textContent=`VitraHouse (${vitra.length})`;
  let b=extras.filter(x=>(!$('extraBrand').value||x.brand===$('extraBrand').value)&&txt(x).includes($('extraSearch').value.toLowerCase()));show(b,'extrasGrid');
  $('extraCount').textContent=`${b.length} producto(s) nuevo(s)`;
  $('tabMuebles').textContent=`Muebles Zacapa (${muebles.length})`;
@@ -103,7 +111,7 @@ function render(){
 
 // ===== Pestañas y eventos =====
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.view').forEach(x=>x.classList.toggle('hidden',x.id!==b.dataset.tab));render()});
-['search','category','extraSearch','extraBrand'].forEach(x=>$(x).addEventListener('input',render));
+['search','category','extraSearch','extraBrand','vSearch','vCategory'].forEach(x=>$(x).addEventListener('input',render));
 
 // ===== Detalle del producto =====
 function openDetail(id){
@@ -184,7 +192,7 @@ async function saveEdit(fs,title){
 // ===== Almacenamiento local (IndexedDB) =====
 function openDB(){return new Promise((res,rej)=>{let r=indexedDB.open('catalogo_unificado_v1',1);r.onupgradeneeded=()=>r.result.createObjectStore('photos',{keyPath:'id'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
 function transact(mode,fn){return new Promise((res,rej)=>{let t=db.transaction('photos',mode),store=t.objectStore('photos');fn(store);t.oncomplete=()=>res();t.onerror=()=>rej(t.error)})}
-async function refresh(){if(db)localItems=await new Promise((res,rej)=>{let r=db.transaction('photos').objectStore('photos').getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});if(cloudOn){try{cloudRows=await cloudLoad();cloudError=''}catch(e){cloudError=e.message}}if(!BASE.length&&!cloudRows.some(x=>x.original)){try{const rb=await fetch('base-original.json',{cache:'no-store'});if(rb.ok)BASE.push(...await rb.json())}catch(e){}}mergeExtras();fillCategories();render();drawCloudBox()}
+async function refresh(){if(db)localItems=await new Promise((res,rej)=>{let r=db.transaction('photos').objectStore('photos').getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});if(cloudOn){try{cloudRows=await cloudLoad();cloudError=''}catch(e){cloudError=e.message}}if(!BASE.length&&!cloudRows.some(x=>x.original)){try{const rb=await fetch('base-original.json',{cache:'no-store'});if(rb.ok)BASE.push(...await rb.json())}catch(e){}}if(!VITRA_FB.length&&!cloudRows.some(x=>x.original&&x.brand==='VitraHouse')){try{const rv=await fetch('vitra-original.json',{cache:'no-store'});if(rv.ok)VITRA_FB.push(...(await rv.json()).map((x,k)=>({...x,images:[x.image],original:true,custom:false,orden:k+1})))}catch(e){}}mergeExtras();fillCategories();render();drawCloudBox()}
 async function remove(id){
  if(cloudOn){try{const x=extras.find(i=>i.id===id);await cloudDelete(id);if(x)deleteImages(imgsOf(x));await refresh()}catch(e){alert('No se pudo eliminar: '+e.message)}return}
  if(PUBLISHED.some(x=>x.id===id))await transact('readwrite',st=>st.put({id,deleted:true}));// marca para quitarlo en la próxima publicación
